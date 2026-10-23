@@ -3,7 +3,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routers import auth_router
+from app.api.routers import (
+    auth_router,
+    historicos_coleta_router,
+    pontos_coleta_router,
+    seed_router,
+    veiculos_frota_router,
+)
 from app.core.config import settings
 from app.core.database import Base, engine
 from app.core.exceptions import register_exception_handlers
@@ -35,6 +41,10 @@ def create_app() -> FastAPI:
     register_exception_handlers(application)
 
     application.include_router(auth_router.router, prefix=settings.API_PREFIX)
+    application.include_router(pontos_coleta_router.router, prefix=settings.API_PREFIX)
+    application.include_router(historicos_coleta_router.router, prefix=settings.API_PREFIX)
+    application.include_router(veiculos_frota_router.router, prefix=settings.API_PREFIX)
+    application.include_router(seed_router.router, prefix=settings.API_PREFIX)
 
     @application.get("/health", tags=["Health"])
     def health_check():
