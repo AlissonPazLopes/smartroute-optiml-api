@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routers import (
     auth_router,
     historicos_coleta_router,
+    ml_router,
     pontos_coleta_router,
     seed_router,
     veiculos_frota_router,
@@ -45,6 +46,7 @@ def create_app() -> FastAPI:
     application.include_router(historicos_coleta_router.router, prefix=settings.API_PREFIX)
     application.include_router(veiculos_frota_router.router, prefix=settings.API_PREFIX)
     application.include_router(seed_router.router, prefix=settings.API_PREFIX)
+    application.include_router(ml_router.router, prefix=settings.API_PREFIX)
 
     @application.get("/health", tags=["Health"])
     def health_check():
