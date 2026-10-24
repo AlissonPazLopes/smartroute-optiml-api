@@ -1,0 +1,24 @@
+services:
+  smartroute-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartroute-optiml-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PROJECT_NAME=SmartRoute OptiML API
+      - DATABASE_URL=sqlite:///./smartroute_optiml.db
+      - SECRET_KEY=smartroute-optiml-super-secret-jwt-key-2026-prod
+      - ACCESS_TOKEN_EXPIRE_MINUTES=120
+    volumes:
+      - smartroute_models:/app/models_artifacts
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  smartroute_models:
